@@ -80,10 +80,10 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
   float vy = x_(3);
   
   float eps = 0.000001;  // Make sure we don't divide by 0.
-  if (px < eps && py < eps) {
+  if (fabs(px) < eps && fabs(py) < eps) {
     px = eps;
     py = eps;
-  } else if (px < eps) {
+  } else if (fabs(px) < eps) {
     px = eps;
   }
   
@@ -106,7 +106,7 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
   MatrixXd I = MatrixXd::Identity(size, size);
   
 //  // Normalize y angle between [-pi, pi]
-//  y[1] -= (2 * M_PI) * floor((y[1] + M_PI) / (2 * M_PI));
+  y[1] -= (2 * M_PI) * floor((y[1] + M_PI) / (2 * M_PI));
   
   // Update state and covariance mats.
   cout << "H_:\n" << H_ << endl;
