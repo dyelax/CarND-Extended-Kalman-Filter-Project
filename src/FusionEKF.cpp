@@ -85,6 +85,7 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
   /*****************************************************************************
    *  Initialization
    ****************************************************************************/
+  float timestamp;
   if (!is_initialized_) {
     // first measurement
     cout << "EKF: " << endl;
@@ -118,8 +119,8 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
                  0,
                  0;
     }
-    
-    previous_timestamp_ = measurement_pack.timestamp_;
+    timestamp = (measurement_pack.timestamp_ / 1000000.);
+    previous_timestamp_ = timestamp;
     
     // done initializing, no need to predict or update
     is_initialized_ = true;
@@ -131,8 +132,9 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
    ****************************************************************************/
 
   // Get the time delta since the last measurement.
-  float dt = measurement_pack.timestamp_ - previous_timestamp_;
-  previous_timestamp_ = measurement_pack.timestamp_;
+  timestamp = (measurement_pack.timestamp_ / 1000000.);
+  float dt = timestamp - previous_timestamp_;
+  previous_timestamp_ = timestamp;
   
   // Update the state transition matrix F according to the new elapsed time.
   ekf_.F_(0, 2) = dt;

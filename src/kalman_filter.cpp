@@ -105,6 +105,9 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
   long size = x_.size();
   MatrixXd I = MatrixXd::Identity(size, size);
   
+//  // Normalize y angle between [-pi, pi]
+//  y[1] -= (2 * M_PI) * floor((y[1] + M_PI) / (2 * M_PI));
+  
   // Update state and covariance mats.
   cout << "H_:\n" << H_ << endl;
   cout << "y:\n" << y << endl;
